@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import tkinter as tk
 from tkinter import messagebox
+from exceptions import AccountException, PasswordException
 import process as p
 
 
@@ -28,11 +29,13 @@ class Login(tk.Frame):
         self.btn.grid(row=3, column=1)
     
     def submit(self) -> None:
-        if (p.login(self.name.get(), self.password.get(), self.confirm.get())):
-            pass
-        else:
-            while (not messagebox.showwarning("Login", "Already logged in")):
-                pass
+        try:
+            if (not p.login(self.name.get(), self.password.get())):
+                messagebox.showwarning("Login", "Already logged in")
+        except PasswordException:
+            messagebox.showerror("Login", "Password doesn't match")
+        except AccountException:
+            messagebox.showwarning("Login", "Account doesn't exist")
         self.master.destroy()
 
 

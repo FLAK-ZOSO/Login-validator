@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import tkinter as tk
 from tkinter import messagebox
+import exceptions as e
 import process as p
 
 
@@ -33,11 +34,12 @@ class SignUp(tk.Frame):
         self.btn.grid(row=4, column=1)
     
     def submit(self) -> None:
-        if (p.signUp(self.name.get(), self.password.get(), self.confirm.get())):
-            pass
-        else:
-            while (not messagebox.showwarning("Sign In", "Username already taken")):
-                pass
+        try:
+            p.signUp(self.name.get(), self.password.get(), self.confirm.get())            
+        except e.AccountException:
+            messagebox.showwarning("Sign In", "Username already taken")
+        except e.PasswordException:
+            messagebox.showerror("Sign In", "Confirmed password doesn't match")
         self.master.destroy()
 
 

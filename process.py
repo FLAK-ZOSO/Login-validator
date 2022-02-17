@@ -1,22 +1,34 @@
 #!/usr/bin/python3
 import json
+from typing import Any
 import exceptions as e
 
 
-def signUp(username: str, password: str, confirm: str) -> bool:
+def encodeDictionary(dictionary: dict[str, dict[str, Any]]):
+    result = "{"
+    for key, value in dictionary.items():
+        result += f"""\n\t{json.dumps(key)}: {json.dumps(value)},"""
+    result = result[:-1]
+    result += "\n}"
+    return result
+
+
+def signUp(username: str, password: str, confirm: str) -> None:
     # Returns True when the sign-up was successful
     # Returns False when the account was already existing
     # Raises PasswordException when the password wasn't confirmed
     if (password != confirm):
         raise e.PasswordException
     
-    with open('data.json', 'r+') as data:
+    with open('data.json', 'r') as data:
         new_dict = json.load(data)
-        if (username in new_dict.keys()):
-            return False
-        new_dict[username] = {"password": password, "logged-in": False}
-        json.dump(new_dict, data)
-    return True
+
+    if (username in new_dict.keys()):
+        raise e.AccountException
+    new_dict[username] = {"password": password, "logged-in": False}
+
+    with open('data.json', 'w') as data:
+        data.write(encodeDictionary(new_dict))
 
 
 def login(username: str, password: str) -> bool:
@@ -24,21 +36,25 @@ def login(username: str, password: str) -> bool:
     # False when the account was already logged in
     # Raises an AccountException when the account doesn't exist
     # Raises a PasswordException when the password is wrong
-    with open('data.json', 'r+') as data:
+    with open('data.json', 'r') as data:
         new_dict = json.load(data)
-        if (not username in new_dict.keys()):
-            raise e.AccountException
-        if (new_dict[username]["logged-in"]):
-            return False
-        if (password != new_dict[username]["password"]):
-            raise e.PasswordException
-        new_dict[username]["logged-in"] = True
-        json.dump(new_dict, data)
+
+    if (not username in new_dict.keys()):
+        raise e.AccountException
+    if (new_dict[username]["logged-in"]):
+        return False
+    if (password != new_dict[username]["password"]):
+        raise e.PasswordException
+    new_dict[username]["logged-in"] = True
+
+    with open('data.json', 'w') as data:
+        data.write(encodeDictionary(new_dict))
     return True
 
 
 def logout(username: str) -> None:
-    with open('data.json', 'r+') as data:
+    with open('data.json', 'r') as data:
         new_dict = json.load(data)
-        new_dict[username]["logged-in"] = False
-        json.dump(new_dict, data)
+    new_dict[username]["logged-in"] = False
+    with open('data.json', 'w') as data:
+        data.write(encodeDictionary(new_dict))
