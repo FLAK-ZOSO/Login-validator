@@ -1,2 +1,2 @@
 # Login validator
- Tkinter login validation from JSON file
+Tkinter login validation from JSON file
