@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import tkinter as tk
 from tkinter import messagebox
-from exceptions import AccountException, PasswordException
+import exceptions as e
 import process as p
 
 
@@ -32,9 +32,9 @@ class Login(tk.Frame):
         try:
             if (not p.login(self.name.get(), self.password.get())):
                 messagebox.showwarning("Login", "Already logged in")
-        except PasswordException:
+        except e.PasswordException:
             messagebox.showerror("Login", "Password doesn't match")
-        except AccountException:
+        except e.AccountException:
             messagebox.showwarning("Login", "Account doesn't exist")
         self.master.destroy()
 

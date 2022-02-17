@@ -52,9 +52,15 @@ def login(username: str, password: str) -> bool:
     return True
 
 
-def logout(username: str) -> None:
+def logout(username: str) -> bool:
     with open('data.json', 'r') as data:
         new_dict = json.load(data)
+    try:
+        if (not new_dict[username]["logged-in"]):
+            return False
+    except KeyError:
+        raise e.AccountException
     new_dict[username]["logged-in"] = False
     with open('data.json', 'w') as data:
         data.write(encodeDictionary(new_dict))
+    return True
