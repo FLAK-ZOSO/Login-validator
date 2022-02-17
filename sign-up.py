@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import tkinter as tk
+from tkinter import messagebox
 import process as p
 
 
@@ -33,7 +34,11 @@ class SignUp(tk.Frame):
     
     def submit(self) -> None:
         if (p.signUp(self.name.get(), self.password.get(), self.confirm.get())):
-            self.master.destroy()
+            pass
+        else:
+            while (not messagebox.showwarning("Sign In", "Username already taken")):
+                pass
+        self.master.destroy()
 
 
 if __name__ == '__main__':
