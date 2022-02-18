@@ -8,7 +8,7 @@ import process as p
 class Logout(tk.Frame):
     def __init__(self, master=None) -> None:
         super().__init__(master)
-        self.master.title("Login form")
+        self.master.title("Logout form")
         self.master.geometry('190x60')
         self.master.resizable(0, 0)
         self.grid()
