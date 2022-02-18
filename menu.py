@@ -2,13 +2,15 @@
 import os
 import sys
 import tkinter as tk
+from tkinter import messagebox
+import process as p
 
 
 # Thanks to Unbuntu from Stack Overflow at https://stackoverflow.com/a/7966437/15888601 for resizable screen
 class Menu(tk.Frame):
     def __init__(self, master=None, user=None) -> None:
         super().__init__(master)
-        self.user = False if (user == None) else user
+        self.user = '' if (user == None) else user
         self.master.title("Main menu")
         self.master.resizable(0, 0)
         self.grid()
@@ -27,7 +29,7 @@ class Menu(tk.Frame):
 
         self.btn = tk.Button(self, text="Close", command=self.master.destroy)
         self.btn.grid(row=3, column=1)
-    
+
     def toggle_geom(self, event=None) -> None:
         self.master.geometry(self._geom)
     
@@ -37,7 +39,11 @@ class Menu(tk.Frame):
     def login(self) -> None:
         os.system('login.py')
         self.master.destroy()
-        os.system(f'menu.py {self.user}')
+        if (p.isLogged(self.user)):
+            os.system(f'menu.py {self.user}')
+        else:
+            messagebox.showerror('Login', f'Couldn\'t log into {self.user}')
+            os.system('menu.py')
 
     def sign_up(self) -> None:
         os.system('sign-up.py')

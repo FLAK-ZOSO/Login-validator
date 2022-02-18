@@ -65,3 +65,11 @@ def logout(username: str) -> bool:
     with open('data.json', 'w') as data:
         data.write(encodeDictionary(new_dict))
     return True
+
+
+def isLogged(user: str) -> bool:
+    with open('data.json', 'r') as data:
+        try:
+            return json.load(data)[user]['logged-in']
+        except BaseException:
+            return False
