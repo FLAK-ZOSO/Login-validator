@@ -36,12 +36,18 @@ class Menu(tk.Frame):
 
     def login(self) -> None:
         os.system('login.py')
-        
+        self.master.destroy()
+        os.system(f'menu.py {self.user}')
+
     def sign_up(self) -> None:
         os.system('sign-up.py')
+        self.master.destroy()
+        os.system('menu.py')
     
     def logout(self) -> None:
         os.system('logout.py')
+        self.master.destroy()
+        os.system('menu.py')
 
 
 if __name__ == '__main__':
