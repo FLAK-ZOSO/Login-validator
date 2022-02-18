@@ -2,6 +2,7 @@
 import json
 from typing import Any
 import exceptions as e
+import password as p
 
 
 def encodeDictionary(dictionary: dict[str, dict[str, Any]]):
@@ -19,13 +20,13 @@ def signUp(username: str, password: str, confirm: str) -> None:
     # Raises PasswordException when the password wasn't confirmed
     if (password != confirm):
         raise e.PasswordException
-    
+
     with open('data.json', 'r') as data:
         new_dict = json.load(data)
 
     if (username in new_dict.keys()):
         raise e.AccountException
-    new_dict[username] = {"password": password, "logged-in": False}
+    new_dict[username] = {"password": p.encode_password(password), "logged-in": False}
 
     with open('data.json', 'w') as data:
         data.write(encodeDictionary(new_dict))
@@ -43,7 +44,7 @@ def login(username: str, password: str) -> bool:
         raise e.AccountException
     if (new_dict[username]["logged-in"]):
         return False
-    if (password != new_dict[username]["password"]):
+    if (password != p.decode_password(new_dict[username]["password"])):
         raise e.PasswordException
     new_dict[username]["logged-in"] = True
 
