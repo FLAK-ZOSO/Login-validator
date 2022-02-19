@@ -37,23 +37,23 @@ class Menu(tk.Frame):
         self.master.geometry(f"{self.master.winfo_screenwidth()}x{self.master.winfo_screenheight()}+0+0")
 
     def login(self) -> None:
-        os.system('login.py')
+        os.system('python login.py')
         self.master.destroy()
         if (p.isLogged(self.user)):
-            os.system(f'menu.py {self.user}')
+            os.system(f'python menu.py {self.user}')
         else:
             messagebox.showerror('Login', f'Couldn\'t log into {self.user}')
-            os.system('menu.py')
+            os.system('python menu.py')
 
     def sign_up(self) -> None:
-        os.system('sign-up.py')
+        os.system('python sign-up.py')
         self.master.destroy()
-        os.system('menu.py')
+        os.system('python menu.py')
     
     def logout(self) -> None:
-        os.system('logout.py')
+        os.system('python logout.py')
         self.master.destroy()
-        os.system('menu.py')
+        os.system('python menu.py')
 
 
 if __name__ == '__main__':
